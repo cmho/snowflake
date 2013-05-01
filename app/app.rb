@@ -5,13 +5,17 @@ module Snowflake
     register Padrino::Helpers
     register Padrino::Admin::AccessControl
 
-    access_control.roles_for :any do |role|
-      role.protect :stories
-    end
+    layout 'layout'
 
     enable :sessions
     enable :authentication
     set :login_page, '/login'
+
+    access_control.roles_for :any do |role|
+      role.protect :stories
+      role.allow '/login'
+      role.allow '/register'
+    end
 
     ##
     # Caching support
@@ -53,12 +57,23 @@ module Snowflake
     #   end
     #
 
-    get '/' do
+    get :index do
       redirect '/stories'
     end
 
-    get '/login' do
+    get :login do
       erb :login
+    end
+
+    post :login do
+      if account = Account.authenticate(params[:email], params[:password])
+        set_current_account(account)
+        redirect '/'
+      else
+        params[:email], params[:password] = h(params[:email]), h(params[:password])
+        flash[:error] = pat('login.error')
+        redirect '/login'
+      end
     end
 
     get '/register' do
@@ -74,7 +89,7 @@ module Snowflake
         flash[:notice] = "Welcome to Snowflake!"
         redirect '/'
       else
-        flash[:notice] = "We're sorry, something went wrong.  Try again?"
+        flash[:error] = "We're sorry, something went wrong.  Try again?"
         erb :register
       end
     end
