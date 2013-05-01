@@ -12,4 +12,6 @@ class Character
   property :paragraph_summary, Text
   property :long_summary, Text
   property :history, Text
+
+  belongs_to :stories
 end

@@ -8,4 +8,6 @@ class Story
   property :paragraph_summary, Text
   property :page_summary, Text
   property :four_page_summary, Text
+
+  has n, :characters
 end

@@ -46,6 +46,44 @@ module Snowflake
     #   end
     #
 
+    get '/' do
+      if session[:username].nil?
+        redirect '/login'
+      end
+      erb :story_list
+    end
+
+    get '/story/:id/1' do
+      erb :sentence_summary
+    end
+
+    post '/story/:id/1' do
+
+      redirect '/story/:id/2'
+    end
+
+    get '/story/:id/2' do
+      erb :paragraph_summary
+    end
+
+    post '/story/:id/2' do
+
+      redirect '/story/:id/3'
+    end
+
+    get '/story/:id/3' do
+
+    end
+
+    post '/story/:id/3' do
+
+      redirect '/story/:id/4'
+    end
+
+    get '/story/:id/4' do
+
+    end
+
     ##
     # You can manage errors like:
     #
