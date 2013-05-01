@@ -3,6 +3,11 @@ module Snowflake
     register Padrino::Rendering
     register Padrino::Mailer
     register Padrino::Helpers
+    register Padrino::Admin::AccessControl
+
+    access_control.roles_for :any do |role|
+      role.protect :stories
+    end
 
     enable :sessions
     enable :authentication
@@ -48,10 +53,26 @@ module Snowflake
     #   end
     #
 
-  get '/' do
-    redirect '/stories'
-  end
+    get '/' do
+      redirect '/stories'
+    end
 
+    get '/login' do
+      erb :login
+    end
+
+    get '/register' do
+      erb :register
+    end
+
+    post '/register' do
+      # some stuff
+    end
+
+    get '/logout' do
+      # do logout things
+      redirect '/'
+    end
     ##
     # You can manage errors like:
     #
