@@ -72,7 +72,7 @@ module Snowflake
     end
 
     get '/story/:id/3' do
-
+      erb :character_summaries
     end
 
     post '/story/:id/3' do
@@ -81,7 +81,37 @@ module Snowflake
     end
 
     get '/story/:id/4' do
+      erb :page_summary
+    end
 
+    post '/story/:id/4' do
+
+      redirect '/story/:id/5'
+    end
+
+    get '/story/:id/5' do
+      erb :character_long_summaries
+    end
+
+    post '/story/:id/5' do
+
+      redirect '/story/:id/6'
+    end
+
+    get '/story/:id/6' do
+      erb :four_page_summary
+    end
+
+    post '/story/:id/6' do
+      redirect '/story/:id/7'
+    end
+
+    get '/story/:id/7' do
+      erb :character_charts
+    end
+
+    post '/story/:id/7' do
+      erb :get_writing
     end
 
     ##
