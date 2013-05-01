@@ -13,5 +13,5 @@ class Character
   property :long_summary, Text
   property :history, Text
 
-  belongs_to :stories
+  belongs_to :story
 end

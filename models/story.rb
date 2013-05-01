@@ -10,4 +10,5 @@ class Story
   property :four_page_summary, Text
 
   has n, :characters
+  belongs_to :user
 end
