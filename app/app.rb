@@ -5,6 +5,8 @@ module Snowflake
     register Padrino::Helpers
 
     enable :sessions
+    enable :authentication
+    set :login_page, '/login'
 
     ##
     # Caching support
