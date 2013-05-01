@@ -1,5 +1,5 @@
 Snowflake.controllers :story do
-  get :index do
+  get :index, :map => "/stories" do
     erb :story_list
   end
 
