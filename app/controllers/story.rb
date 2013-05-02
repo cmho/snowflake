@@ -1,6 +1,6 @@
 Snowflake::App.controllers :story do
   get :index, :map => "/stories" do
-    @stories = Story.all(:account_id => current_account.id)
+    @stories = Story.all(:account_id => session[:account_id])
     render 'story/story_list'
   end
 
@@ -13,7 +13,13 @@ Snowflake::App.controllers :story do
   end
 
   post :create do
-    @story = Story.new(params[:story])
+    @story = Story.new(:title => params[:title])
+    if @story.save
+      redirect "/story/edit/#{@story.id}/1"
+    else
+      flash[:error] = "There was an error creating your story."
+      render :create
+    end
   end
 
   get :edit, :with => [:id, :step] do
@@ -39,14 +45,20 @@ Snowflake::App.controllers :story do
   end
 
   post :edit, :with => [:id, :step] do
+    @story = Story.get(:id => params[:id])
     if params[:step] == 1
-      # idek
+      @story.update(:sentence_summary => params[:sentence_summary])
     end
 
-    # redirect based on action type ("save" or "save and continue")
-    if params[:action] == "Save"
+    if @story.save
+      # redirect based on action type ("save" or "save and continue")
+      if params[:action] == "Save"
+        redirect '/story/edit/#{params[:id]/#{params[:step]}'
+      end
+      redirect '/story/edit/#{params[:id]}/#{params[:step]+1}'
+    else
+      flash[:error] = "There was an error saving your changes."
       redirect '/story/edit/#{params[:id]/#{params[:step]}'
     end
-    redirect '/story/edit/#{params[:id]}/#{params[:step]+1}'
   end
 end

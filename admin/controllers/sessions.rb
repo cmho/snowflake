@@ -38,6 +38,7 @@ Snowflake::Admin.controllers :sessions do
 
   delete :destroy do
     set_current_account(nil)
+    session[:account_id] = nil
     redirect url(:sessions, :new)
   end
 end

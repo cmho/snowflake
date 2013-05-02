@@ -1,9 +1,4 @@
 <a href="/story/create" class="btn btn-primary">Create New Story</a>
-<ul>
-<% session.each do |k, v| %>
-	<li><%= k %>: <%= v %></li>
-<% end %>
-</ul>
 <% if @stories.length > 0 %>
 	<ul>
 	<% @stories.each do |story| %>
