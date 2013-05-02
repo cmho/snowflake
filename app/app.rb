@@ -9,12 +9,14 @@ module Snowflake
 
     enable :sessions
     enable :authentication
-    set :login_page, '/login'
+    set :login_page, '/admin/sessions/login'
 
     access_control.roles_for :any do |role|
+      role.allow :login
+      role.allow :register
+      role.protect :story
       role.protect :stories
-      role.allow '/login'
-      role.allow '/register'
+      role.protect :index
     end
 
     ##
@@ -68,36 +70,19 @@ module Snowflake
     post :login do
       if account = Account.authenticate(params[:email], params[:password])
         set_current_account(account)
-        redirect '/'
+        session[:account_id] = account.id
+        redirect :index
       else
         params[:email], params[:password] = h(params[:email]), h(params[:password])
         flash[:error] = pat('login.error')
-        redirect '/login'
+        redirect :login
       end
     end
 
-    get '/register' do
-      erb :register
-    end
-
-    post '/register' do
-      @account = Account.new(params[:post])
-      @account.role = "user"
-      @account.crypted_password = BCrypt.Password.create(params[:password])
-      if @account.save
-        session[:account_id] = @account.id
-        flash[:notice] = "Welcome to Snowflake!"
-        redirect '/'
-      else
-        flash[:error] = "We're sorry, something went wrong.  Try again?"
-        erb :register
-      end
-    end
-
-    get '/logout' do
+    get :logout do
       # do logout things
-      session.delete(:account_id)
-      redirect '/'
+      set_current_account(nil)
+      redirect :login
     end
     ##
     # You can manage errors like:

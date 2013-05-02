@@ -1,6 +1,6 @@
 Snowflake::App.controllers :story do
   get :index, :map => "/stories" do
-    @stories = Story.all(:account_id => session[:account_id])
+    @stories = Story.all(:account_id => current_account.id)
     render 'story/story_list'
   end
 

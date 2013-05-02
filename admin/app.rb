@@ -33,7 +33,7 @@ module Snowflake
     end
 
     access_control.roles_for :admin do |role|
-    role.project_module :accounts, '/accounts'
+      role.project_module :accounts, '/accounts'
     end
 
     # Custom error management 
